@@ -35,6 +35,22 @@ pipeline {
 		])
 	    }
 	}
+	stage("Package") {
+	    steps {
+		sh "./gradlew build"
+	    }
+	}
+	stage("Docker build") {
+	    steps {
+		sh "docker build -t pitachx/calculator ."
+	    }
+	}
+	stage("Docker push") {
+	    steps {
+		sh "cat p.txt | docker login --username pitachx --password-stdin"
+		sh "docker push pitachx/calculator"
+	    }
+	}
     }
 }
 
