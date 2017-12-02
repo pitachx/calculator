@@ -2,6 +2,10 @@ package org.testig.calculator;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Bla
+ */
+
 public class CalculatorTest {
 	private Calculator calculator = new Calculator();
 
