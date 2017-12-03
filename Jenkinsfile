@@ -40,6 +40,12 @@ pipeline {
 		sh "./gradlew build"
 	    }
 	}
+	stage("Start docker") {
+	    steps {
+		sh "/etc/init.d/docker start"
+		sleep 5
+	    }
+	}
 	stage("Docker build") {
 	    steps {
 		sh "docker build -t pitachx/calculator ."
