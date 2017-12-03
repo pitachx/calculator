@@ -59,7 +59,7 @@ pipeline {
 	}
 	stage("Deploy to staging") {
 	    steps {
-		sh "docker run -d --rm -p 8765:8080 --name calculator pitachx/calculator"
+		sh "docker-compose up -d"
 	    }
 	}
 	stage("Acceptance test") {
@@ -71,7 +71,7 @@ pipeline {
     }
     post {
 	always {
-	    sh "docker stop calculator"
+	    sh "docker-compose down"
 	}
     }
 }
