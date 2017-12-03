@@ -46,33 +46,23 @@ pipeline {
 		sleep 5
 	    }
 	}
-	stage("Docker build") {
-	    steps {
-		sh "docker build -t pitachx/calculator ."
-	    }
-	}
-	stage("Docker push") {
-	    steps {
-		sh "cat p.txt | docker login --username pitachx --password-stdin"
-		sh "docker push pitachx/calculator"
-	    }
-	}
-	stage("Deploy to staging") {
-	    steps {
-		sh "docker-compose up -d"
-	    }
-	}
 	stage("Acceptance test") {
 	    steps {
-		sleep 60
-		sh "bash acceptance_test.sh"
+		    sh "docker-compose -f docker-compose.yml
+                -f acceptance/docker-compose-acceptance.yml build test"
+            sh "docker-compose -f docker-compose.yml
+                -f acceptance/docker-compose-acceptance.yml
+                -p acceptance up -d"
+            sh 'test $(docker wait acceptance_test_1) -eq 0'
 	    }
 	}
     }
     post {
-	always {
-	    sh "docker-compose down"
-	}
+	    always {
+	        sh "docker-compose -f docker-compose.yml
+                -f acceptance/docker-compose-acceptance.yml
+                -p acceptance down"   
+	    }
     }
 }
 
