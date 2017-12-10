@@ -1,9 +1,13 @@
 version: "3"
 services:
     calculator:
-        build: .
+        deploy:
+            replicas: 3
+        image: pitachx/calculator:latest
         ports:
-            - 8080
+            - "8881:8080"
     redis:
+        deploy:
+            replicas: 1
         image: redis:latest
 
